@@ -5,6 +5,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from .config.settings import settings
 from .routes import auth_routes, voucher_routes, plan_routes, admin_routes, reseller_routes, router_routes, analytics_routes
+from .config.database import engine, Base
+from .models import user, voucher, plan, router, session, transaction, device
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -43,6 +45,12 @@ async def get_page(page: str):
     if os.path.exists(file_path):
         return FileResponse(file_path)
     return {"error": "Page not found"}
+
+@app.on_event("startup")
+async def startup():
+    async with engine.begin() as conn:
+        # This will create all tables if they don't exist
+        await conn.run_sync(Base.metadata.create_all)
 
 # Include routers
 app.include_router(auth_routes.router, prefix=f"{settings.API_V1_STR}/auth", tags=["auth"])
