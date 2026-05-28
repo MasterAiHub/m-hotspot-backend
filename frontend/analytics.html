@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics | M Hotspot Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">M HOTSPOT ADMIN</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="reseller.html">Resellers</a>
+            </div>
+        </nav>
+
+        <h1>Network Analytics</h1>
+
+        <div class="plans-grid">
+            <div class="glass-card">
+                <h3>Daily Revenue</h3>
+                <canvas id="revenueChart"></canvas>
+            </div>
+            <div class="glass-card">
+                <h3>User Growth</h3>
+                <canvas id="userChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script>
+        const ctx1 = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Revenue (KES)',
+                    data: [1200, 1900, 3000, 5000, 2000, 3000, 4500],
+                    borderColor: '#00d2ff',
+                    tension: 0.4
+                }]
+            }
+        });
+
+        const ctx2 = document.getElementById('userChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                datasets: [{
+                    label: 'New Users',
+                    data: [50, 80, 120, 190, 250],
+                    backgroundColor: '#3a7bd5'
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseller Portal | M Hotspot</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">M HOTSPOT</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="index.html" onclick="localStorage.clear()">Logout</a>
+            </div>
+        </nav>
+
+        <header style="margin-top: 40px;">
+            <h1>Reseller Portal</h1>
+            <div class="glass-card" style="display: inline-block; margin-top: 20px;">
+                <span style="color: #94a3b8;">Current Balance:</span>
+                <span style="font-size: 1.5rem; font-weight: bold; margin-left: 10px;">5,420 KES</span>
+            </div>
+        </header>
+
+        <section style="margin-top: 40px;">
+            <h2>Generate Vouchers</h2>
+            <div class="glass-card" style="max-width: 500px; margin-top: 20px;">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>Select Plan</label>
+                    <select id="plan-select" style="width: 100%; padding: 12px; border-radius: 30px; background: var(--glass); color: white; border: 1px solid var(--glass-border);">
+                        <option value="1">QUICK CONNECT - 5 KES</option>
+                        <option value="2">TURBO HOUR - 10 KES</option>
+                        <option value="3">ULTRA DAY - 40 KES</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>Quantity</label>
+                    <input type="number" id="quantity" value="1" min="1" max="100">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="generateVouchers()">Generate & Download</button>
+            </div>
+        </section>
+    </div>
+    <script>
+        async function generateVouchers() {
+            alert('Generating vouchers... In production this would call the API and download a PDF/Text file.');
+        }
+    </script>
+</body>
+</html>
