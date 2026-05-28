@@ -7,8 +7,9 @@ class Voucher(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     code = Column(String, unique=True, index=True, nullable=False)
-    plan_id = Column(Integer, ForeignKey("plans.id"))
-    created_by = Column(Integer, ForeignKey("users.id"))
+    plan_id = Column(Integer, ForeignKey("plans.id"), nullable=True)
+    plan_name = Column(String, nullable=True)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     is_used = Column(Boolean, default=False)
     used_at = Column(DateTime(timezone=True), nullable=True)
     used_by = Column(Integer, ForeignKey("users.id"), nullable=True)
