@@ -6,66 +6,44 @@
     <title>M Hotspot | Premium Internet</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <nav>
             <div class="logo">M HOTSPOT</div>
             <div class="nav-links">
-                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="login.html" class="btn btn-primary">Connect Now</a>
             </div>
         </nav>
 
         <section class="hero">
-            <h1 class="animate-up">High Speed WiFi <br>Anywhere, Anytime.</h1>
-            <p class="animate-up">Experience seamless connectivity with our premium hotspot plans. Starting from just 5 KES.</p>
+            <h1 class="animate-up">Premium WiFi <br>No Password Needed.</h1>
+            <p class="animate-up">Fast, secure, and reliable internet. Just enter your phone number and get connected in seconds.</p>
             <div class="stats animate-up">
-                <span id="active-users">245</span> Active Users Online
+                <span id="active-users">142</span> Active Users Online
+            </div>
+            <div style="margin-top: 40px;">
+                <a href="login.html" class="btn btn-primary btn-lg" style="padding: 15px 40px; font-size: 1.2rem;">Get Started</a>
             </div>
         </section>
 
-        <section class="voucher-section glass-card animate-up">
-            <h3>Have a Voucher?</h3>
-            <div class="input-group">
-                <input type="text" id="voucher-code" placeholder="Enter Voucher Code">
-                <button class="btn btn-primary" onclick="redeemVoucher()">Connect</button>
-            </div>
-            <p id="status-msg" style="margin-top: 10px; font-size: 0.9rem;"></p>
-        </section>
-
-        <div class="plans-grid" id="plans-container">
-            <!-- Plans will be loaded here -->
+        <div class="plans-grid">
             <div class="glass-card">
-                <h4>QUICK CONNECT</h4>
-                <div class="price">5 KES</div>
-                <ul>
-                    <li>30 Minutes</li>
-                    <li>2 Mbps Speed</li>
-                </ul>
-                <button class="btn btn-primary">Buy Now</button>
-            </div>
-            <div class="glass-card">
-                <h4>TURBO HOUR</h4>
-                <div class="price">10 KES</div>
-                <ul>
-                    <li>1 Hour</li>
-                    <li>3 Mbps Speed</li>
-                </ul>
-                <button class="btn btn-primary">Buy Now</button>
-            </div>
-            <div class="glass-card">
+                <div class="tag">MOST POPULAR</div>
                 <h4>ULTRA DAY</h4>
-                <div class="price">40 KES</div>
-                <ul>
-                    <li>24 Hours</li>
-                    <li>5 Mbps Speed</li>
-                </ul>
-                <button class="btn btn-primary">Buy Now</button>
+                <div class="price">90 KES</div>
+                <p>24 Hours • 5 Mbps</p>
+            </div>
+            <div class="glass-card">
+                <div class="tag">BEST SPEED</div>
+                <h4>UNLIMITED MAX</h4>
+                <div class="price">1450 KES</div>
+                <p>30 Days • 10 Mbps</p>
             </div>
         </div>
     </div>
-
-    <script src="js/app.js"></script>
+    <script>
+        if(localStorage.getItem('token')) window.location.href = 'dashboard.html';
+    </script>
 </body>
 </html>
