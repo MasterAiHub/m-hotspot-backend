@@ -3,50 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reseller Portal | M Hotspot</title>
+    <title>M HOTSPOT | Reseller Portal</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-    <div class="container">
-        <nav>
-            <div class="logo">M HOTSPOT</div>
-            <div class="nav-links">
-                <a href="dashboard.html">Dashboard</a>
-                <a href="index.html" onclick="localStorage.clear()">Logout</a>
+<body style="background: #020617;">
+    <div class="container" style="max-width: 1000px;">
+        <nav style="display: flex; justify-content: space-between; align-items: center; padding: 20px 0;">
+            <div class="logo-main" style="font-size: 1.2rem;">
+                <span>M</span><i class="fas fa-fire fire"></i><span>HOTSPOT</span> <span style="font-size: 0.7rem; background: var(--accent); color: #000; padding: 2px 8px; border-radius: 4px; margin-left: 10px; font-weight: 800;">RESELLER</span>
             </div>
+            <a href="dashboard.html" class="btn btn-outline" style="font-size: 0.8rem;">Exit Portal</a>
         </nav>
 
-        <header style="margin-top: 40px;">
-            <h1>Reseller Portal</h1>
-            <div class="glass-card" style="display: inline-block; margin-top: 20px;">
-                <span style="color: #94a3b8;">Current Balance:</span>
-                <span style="font-size: 1.5rem; font-weight: bold; margin-left: 10px;">5,420 KES</span>
+        <div class="glass animate-up" style="padding: 40px; border-radius: 24px; margin-top: 30px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div style="color: var(--text-dim); font-size: 0.9rem;">Available Credit</div>
+                <div id="balance" style="font-size: 3rem; font-weight: 900; color: #10b981;">KES 5,000</div>
             </div>
-        </header>
+            <button class="btn btn-primary" style="width: auto; padding: 15px 30px;">Top Up Balance</button>
+        </div>
 
-        <section style="margin-top: 40px;">
-            <h2>Generate Vouchers</h2>
-            <div class="glass-card" style="max-width: 500px; margin-top: 20px;">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Select Plan</label>
-                    <select id="plan-select" style="width: 100%; padding: 12px; border-radius: 30px; background: var(--glass); color: white; border: 1px solid var(--glass-border);">
-                        <option value="1">QUICK CONNECT - 5 KES</option>
-                        <option value="2">TURBO HOUR - 10 KES</option>
-                        <option value="3">ULTRA DAY - 40 KES</option>
-                    </select>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+            <div class="stat-card glass animate-up" style="padding: 25px; animation-delay: 0.1s;">
+                <i class="fas fa-ticket-alt" style="font-size: 1.5rem; color: var(--primary);"></i>
+                <div>
+                    <div id="total-vouchers" style="font-size: 1.5rem; font-weight: 800;">154</div>
+                    <div style="font-size: 0.7rem; color: var(--text-dim);">Vouchers Distributed</div>
                 </div>
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Quantity</label>
-                    <input type="number" id="quantity" value="1" min="1" max="100">
-                </div>
-                <button class="btn btn-primary" style="width: 100%;" onclick="generateVouchers()">Generate & Download</button>
             </div>
-        </section>
+            <div class="stat-card glass animate-up" style="padding: 25px; animation-delay: 0.2s;">
+                <i class="fas fa-piggy-bank" style="font-size: 1.5rem; color: var(--accent);"></i>
+                <div>
+                    <div id="commission" style="font-size: 1.5rem; font-weight: 800;">KES 1,250</div>
+                    <div style="font-size: 0.7rem; color: var(--text-dim);">Total Commission</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 50px;">Purchase Inventory</h3>
+        <div class="plans-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="glass plan-card" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <h4>ULTRA DAY</h4>
+                <div style="font-weight: 800;">90 KES / unit</div>
+                <button class="btn btn-primary" style="font-size: 0.8rem; padding: 8px;">Buy Batch</button>
+            </div>
+            <div class="glass plan-card" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <h4>POWER WEEK</h4>
+                <div style="font-weight: 800;">500 KES / unit</div>
+                <button class="btn btn-primary" style="font-size: 0.8rem; padding: 8px;">Buy Batch</button>
+            </div>
+            <div class="glass plan-card" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <h4>UNLIMITED MAX</h4>
+                <div style="font-weight: 800;">1450 KES / unit</div>
+                <button class="btn btn-primary" style="font-size: 0.8rem; padding: 8px;">Buy Batch</button>
+            </div>
+        </div>
     </div>
+
     <script>
-        async function generateVouchers() {
-            alert('Generating vouchers... In production this would call the API and download a PDF/Text file.');
+        async function loadResellerData() {
+            try {
+                const res = await fetch('/api/v1/resellers/dashboard');
+                const data = await res.json();
+                document.getElementById('balance').innerText = `KES ${data.balance.toLocaleString()}`;
+                document.getElementById('total-vouchers').innerText = data.total_vouchers_sold;
+                document.getElementById('commission').innerText = `KES ${data.commission_earned.toLocaleString()}`;
+            } catch (e) { console.error(e); }
         }
+        loadResellerData();
     </script>
 </body>
 </html>

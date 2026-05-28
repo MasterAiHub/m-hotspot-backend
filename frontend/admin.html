@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M HOTSPOT | Admin Control</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="background: #020617;">
+    <div class="container" style="max-width: 1200px;">
+        <nav style="display: flex; justify-content: space-between; align-items: center; padding: 20px 0;">
+            <div class="logo-main" style="font-size: 1.2rem;">
+                <span>M</span><i class="fas fa-fire fire"></i><span>HOTSPOT</span> <span style="font-size: 0.7rem; background: var(--primary); padding: 2px 8px; border-radius: 4px; margin-left: 10px;">ADMIN</span>
+            </div>
+            <a href="dashboard.html" class="btn btn-outline" style="font-size: 0.8rem;">Exit Admin</a>
+        </nav>
+
+        <div class="stats-row" style="grid-template-columns: repeat(4, 1fr); margin-top: 30px;">
+            <div class="stat-card glass animate-up">
+                <i class="fas fa-users" style="color: var(--primary);"></i>
+                <div>
+                    <div id="total-users" style="font-size: 1.5rem; font-weight: 800;">--</div>
+                    <div style="font-size: 0.7rem; color: var(--text-dim);">Total Customers</div>
+                </div>
+            </div>
+            <div class="stat-card glass animate-up" style="animation-delay: 0.1s;">
+                <i class="fas fa-money-bill-wave" style="color: #10b981;"></i>
+                <div>
+                    <div id="total-revenue" style="font-size: 1.5rem; font-weight: 800;">--</div>
+                    <div style="font-size: 0.7rem; color: var(--text-dim);">Total Revenue (KES)</div>
+                </div>
+            </div>
+            <div class="stat-card glass animate-up" style="animation-delay: 0.2s;">
+                <i class="fas fa-wifi" style="color: var(--accent);"></i>
+                <div>
+                    <div id="active-sessions" style="font-size: 1.5rem; font-weight: 800;">--</div>
+                    <div style="font-size: 0.7rem; color: var(--text-dim);">Live Connections</div>
+                </div>
+            </div>
+            <div class="stat-card glass animate-up" style="animation-delay: 0.3s;">
+                <i class="fas fa-microchip" style="color: var(--purple);"></i>
+                <div>
+                    <div id="network-load" style="font-size: 1.5rem; font-weight: 800;">--</div>
+                    <div style="font-size: 0.7rem; color: var(--text-dim);">Network Load</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 40px;">
+            <div class="glass animate-up" style="padding: 30px; border-radius: 20px; animation-delay: 0.4s;">
+                <h3>Network Performance</h3>
+                <canvas id="performanceChart" height="150"></canvas>
+            </div>
+            <div class="glass animate-up" style="padding: 30px; border-radius: 20px; animation-delay: 0.5s;">
+                <h3>Quick Voucher</h3>
+                <div class="form-group">
+                    <label>Plan Type</label>
+                    <select id="v-plan" style="width: 100%; background: #0f172a; color: white; border: 1px solid var(--border); padding: 10px; border-radius: 8px;">
+                        <option>ULTRA DAY</option>
+                        <option>POWER WEEK</option>
+                        <option>UNLIMITED MAX</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" id="v-count" value="10">
+                </div>
+                <button class="btn btn-primary" onclick="generateVouchers()">Generate Batch</button>
+                <div id="v-result" style="margin-top: 15px; font-size: 0.8rem; color: #10b981;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/v1/admin/stats');
+                const data = await res.json();
+                document.getElementById('total-users').innerText = data.total_users;
+                document.getElementById('total-revenue').innerText = data.total_revenue.toLocaleString();
+                document.getElementById('active-sessions').innerText = data.active_sessions;
+                document.getElementById('network-load').innerText = data.network_load;
+            } catch (e) { console.error(e); }
+        }
+
+        async function generateVouchers() {
+            const plan = document.getElementById('v-plan').value;
+            const count = document.getElementById('v-count').value;
+            const res = await fetch(`/api/v1/admin/vouchers/generate?count=${count}&plan_name=${plan}`, {method: 'POST'});
+            const data = await res.json();
+            document.getElementById('v-result').innerText = `Successfully generated ${count} codes.`;
+        }
+
+        // Initialize Chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                datasets: [{
+                    label: 'Bandwidth Usage (Gbps)',
+                    data: [1.2, 1.9, 3.4, 2.8, 4.5, 3.9],
+                    borderColor: '#3b82f6',
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)'
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } }
+            }
+        });
+
+        loadStats();
+        setInterval(loadStats, 5000);
+    </script>
+</body>
+</html>
