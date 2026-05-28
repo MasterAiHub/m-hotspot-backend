@@ -3,48 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | M Hotspot</title>
+    <title>M Hotspot | Login</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .login-container { display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .login-card { width: 100%; max-width: 400px; text-align: center; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        label { display: block; margin-bottom: 8px; color: #94a3b8; }
-        input { width: 100%; box-sizing: border-box; }
+        .login-wrap { height: 100vh; display: flex; align-items: center; justify-content: center; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="glass-card login-card">
-            <h2 style="margin-bottom: 10px;">M HOTSPOT</h2>
-            <p style="color: #94a3b8; margin-bottom: 30px;">Enter your phone to connect</p>
-            
-            <div id="phone-section">
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="text" id="phone" placeholder="e.g., 0712345678">
+    <div class="container login-wrap">
+        <div style="width: 100%;">
+            <!-- Logo -->
+            <div class="logo-container">
+                <div class="logo-main">
+                    <span>M</span><i class="fas fa-fire fire"></i><span>HOTSPOT</span>
                 </div>
-                <button class="btn btn-primary" style="width: 100%;" onclick="sendOTP()">Send OTP</button>
+                <div class="logo-sub">Automated Network Gateway</div>
             </div>
 
-            <div id="otp-section" class="hidden">
-                <div class="form-group">
-                    <label>Enter 6-digit OTP</label>
-                    <input type="text" id="otp" placeholder="XXXXXX">
+            <div class="rewards-section" style="background: var(--card-bg); border: 1px solid var(--border);">
+                <div id="phone-section">
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="phone" placeholder="e.g. 0712345678">
+                    </div>
+                    <button class="btn btn-primary" onclick="sendOTP()">Send OTP</button>
                 </div>
-                <button class="btn btn-primary" style="width: 100%;" onclick="verifyOTP()">Verify & Connect</button>
-                <p style="margin-top: 15px; font-size: 0.8rem; color: #94a3b8;">Didn't get code? <a href="#" onclick="location.reload()" style="color: var(--primary);">Try again</a></p>
-            </div>
 
-            <p id="msg" style="margin-top: 15px; min-height: 20px;"></p>
+                <div id="otp-section" class="hidden">
+                    <div class="form-group">
+                        <label>Verification Code</label>
+                        <input type="text" id="otp" placeholder="Enter 6-digit OTP">
+                    </div>
+                    <button class="btn btn-primary" onclick="verifyOTP()">Verify & Connect</button>
+                </div>
+                <p id="msg" style="margin-top: 15px; text-align: center; font-size: 0.8rem; min-height: 20px;"></p>
+            </div>
         </div>
     </div>
     <script>
         async function sendOTP() {
             const phone = document.getElementById('phone').value;
             const msg = document.getElementById('msg');
-            if (!phone) return msg.innerText = "Enter phone number";
+            if(!phone) return msg.innerText = "Enter phone number";
             
             try {
                 const res = await fetch('/api/v1/auth/send-otp', {
@@ -53,17 +55,17 @@
                     body: JSON.stringify({phone_number: phone})
                 });
                 const data = await res.json();
-                if (res.ok) {
+                if(res.ok) {
                     document.getElementById('phone-section').classList.add('hidden');
                     document.getElementById('otp-section').classList.remove('hidden');
                     msg.innerText = "OTP sent! (Debug: " + data.otp_debug + ")";
-                    msg.style.color = "#00ff00";
+                    msg.style.color = "#10b981";
                     localStorage.setItem('temp_phone', phone);
                 } else {
-                    msg.innerText = data.detail || "Error sending OTP";
-                    msg.style.color = "red";
+                    msg.innerText = data.detail || "Error";
+                    msg.style.color = "#ef4444";
                 }
-            } catch (e) { msg.innerText = "Connection error"; }
+            } catch(e) { msg.innerText = "Connection error"; }
         }
 
         async function verifyOTP() {
@@ -78,15 +80,15 @@
                     body: JSON.stringify({phone_number: phone, otp_code: otp})
                 });
                 const data = await res.json();
-                if (res.ok) {
+                if(res.ok) {
                     localStorage.setItem('token', data.access_token);
                     localStorage.setItem('phone', phone);
                     window.location.href = 'dashboard.html';
                 } else {
-                    msg.innerText = data.detail || "Invalid OTP";
-                    msg.style.color = "red";
+                    msg.innerText = "Invalid OTP";
+                    msg.style.color = "#ef4444";
                 }
-            } catch (e) { msg.innerText = "Connection error"; }
+            } catch(e) { msg.innerText = "Error"; }
         }
     </script>
 </body>
