@@ -1,13 +1,13 @@
 :root {
-    --bg-dark: #020617;
-    --card-bg: #0f172a;
-    --primary: #0ea5e9;
-    --secondary: #3b82f6;
-    --accent: #f97316;
-    --purple: #a855f7;
-    --text-main: #f8fafc;
-    --text-dim: #94a3b8;
-    --border: rgba(255, 255, 255, 0.1);
+    --bg-dark: #050505;
+    --card-bg: #111827;
+    --primary: #3b82f6;
+    --secondary: #2563eb;
+    --accent: #fbbf24;
+    --purple: #9333ea;
+    --text-main: #ffffff;
+    --text-dim: #9ca3af;
+    --border: #374151;
 }
 
 body {
@@ -26,13 +26,14 @@ body {
 
 /* Welcome Box */
 .welcome-box {
-    border: 2px dashed #1e40af;
-    border-radius: 15px;
+    border: 2px dashed var(--primary);
+    border-radius: 16px;
     padding: 20px;
     text-align: center;
     margin-bottom: 30px;
     color: var(--primary);
-    font-weight: 500;
+    font-weight: 600;
+    background: rgba(59, 130, 246, 0.05);
 }
 
 /* Logo Section */
@@ -151,6 +152,10 @@ body {
     background: var(--primary);
     color: white;
     width: 100%;
+    padding: 16px;
+    font-size: 1rem;
+    text-transform: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .btn-primary:hover {
