@@ -23,7 +23,12 @@ if settings.BACKEND_CORS_ORIGINS:
     )
 
 # Mount static files
-frontend_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+# The structure is: root/backend/app/main.py
+# Frontend is at: root/frontend
+# So we need to go up 3 levels from main.py to reach root, then into frontend
+base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+frontend_path = os.path.join(base_dir, "frontend")
+
 app.mount("/css", StaticFiles(directory=os.path.join(frontend_path, "css")), name="css")
 app.mount("/js", StaticFiles(directory=os.path.join(frontend_path, "js")), name="js")
 app.mount("/assets", StaticFiles(directory=os.path.join(frontend_path, "assets")), name="assets")
