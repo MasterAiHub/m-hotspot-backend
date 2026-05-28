@@ -1,5 +1,6 @@
-fastapi>=0.100.0
-uvicorn>=0.22.0
+fastapi[standard]>=0.100.0
+uvicorn[standard]>=0.22.0
+gunicorn>=21.2.0
 sqlalchemy[asyncio]>=2.0.0
 asyncpg>=0.28.0
 pydantic>=2.0.0
@@ -10,5 +11,3 @@ python-multipart>=0.0.6
 python-dotenv>=1.0.0
 alembic>=1.11.0
 psycopg2-binary>=2.9.6
-gunicorn>=21.2.0
-uvicorn[standard]>=0.22.0
